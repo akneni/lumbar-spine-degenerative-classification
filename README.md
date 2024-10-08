@@ -8,7 +8,7 @@ This project is developed for the [Kaggle competition](https://www.kaggle.com/co
 The competition provides a comprehensive dataset sourced from eight medical sites across five continents. A single data point consists of a study. Each study has several series of images, and each series of images is made up of several different images at different levels. Each study maps to an inference on several conditions (Left and right neural_foraminal_narrowing for each vertebrae from L1-L2 to L5-s1, left and right subarticular stenosis for each of the same set of vertebrae, and spinal canal stenosis). 
 - **Study**: A single study is the primary data point that is mapped to a set of labels. Each study corresponds to a unique patient case with varying levels of spine degeneration.
 - **Series**: Each study is comprised of multiple series of images, representing different sequences of MRI scans taken from the same patient. Each series captures the lumbar spine from various angles or sequences, aiding in comprehensive analysis.
-- **Images**: Each series consists of multiple images captured at different vertebral levels. These images provide detailed information necessary for diagnosing conditions affecting the lumbar spine.
+- **Instance**: Each series consists of multiple images captured at different vertebral levels. These images provide detailed information necessary for diagnosing conditions affecting the lumbar spine.
 
 
 ### Dataset (Labels)
