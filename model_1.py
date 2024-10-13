@@ -9,9 +9,14 @@ class AvgPoolingCnn(nn.Module):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         
-        self.conv1 = nn.Conv2d(1, 16, 3)
-        self.conv2 = nn.Conv2d(1, 16, 3)
-        self.conv3 = nn.Conv2d(1, 16, 3)
+        self.conv = nn.Sequential (
+            nn.Conv2d(1, 16, 5),
+            nn.ReLU(),
+            nn.MaxPool2d(4),
+            nn.Conv2d(16, 16, 3),
+            nn.ReLU(),
+            nn.MaxPool2d(4),
+        )
 
         self.fc1 = nn.Linear(8112, 1024)
 
@@ -37,21 +42,21 @@ class AvgPoolingCnn(nn.Module):
         zipped_iter = zip(
             [series_1, series_2, series_3],
             [features_1, features_2, features_3],
-            [self.conv1, self.conv2, self.conv3],
         )
 
-        for series, features, conv_layer in zipped_iter:
+        for series, features in zipped_iter:
             for t in series:
-                t = conv_layer(t)
-                t = torch.relu(t)
-                t = torch.max_pool2d(t, kernel_size=16)
+                # t.size() = torch.Size([B, 1, 224, 224])
+                t = self.conv(t)
                 t = torch.flatten(t, start_dim=1)
 
                 features.append(t)
             tsr = torch.stack(features, dim=1)
+            # tsr.size() = torch.Size([14, X, 2704])
             features_all.append(tsr.mean(1))
 
         features = torch.cat(features_all, dim=1)
+        # features.size() = torch.Size([B, 8112])
         features = self.fc1(features)
         features = torch.relu(features)
 
